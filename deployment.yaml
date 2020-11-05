@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-deploy
+spec:
+  selector:
+    matchLabels:
+      app: first-kube
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: first-kube
+    spec:
+      containers:
+      - name: first-kube
+        image: jinong/first-kube:v1
+# image: "studyk8s.azurecr.io/my-first-kube:v1.0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webserver
+
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
+
+  selector:
+    app: first-kube
